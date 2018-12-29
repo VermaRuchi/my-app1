@@ -1,18 +1,38 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Person from './Person/Person.js';
+import logo from '../logo.svg';
+import classes from './App.css';
+import Persons from '../components/Persons/Persons.js';
+import Cockpit from '../components/Cockpit/Cockpit.js';
 
 class App extends Component {
-  state = {
-    persons : [
-      { id: "aaa", name : "ruchi", age :"25"},
-      { id: "bbb", name: "riya", age :"24"},
-      { id: "ccc", name: "tiya", age :"23"}
-    ],
-    otherstate : 'some other value',
-    showPersons : false
+  constructor (props) {
+    super(props);
+    console.log("[App.js] Inside Constructore", props);
+    this.state =  {
+      persons : [
+        { id: "aaa", name : "ruchi", age :"25"},
+        { id: "bbb", name: "riya", age :"24"},
+        { id: "ccc", name: "tiya", age :"23"}
+      ],
+      otherstate : 'some other value',
+      showPersons : false
+    }
   }
+  componentWillMount(){
+    console.log("[App.js] Inside componentWillMount");
+  }
+  componentDidMount(){
+    console.log("[App.js] Inside componentDidMount");
+  }
+  // state = {
+  //   persons : [
+  //     { id: "aaa", name : "ruchi", age :"25"},
+  //     { id: "bbb", name: "riya", age :"24"},
+  //     { id: "ccc", name: "tiya", age :"23"}
+  //   ],
+  //   otherstate : 'some other value',
+  //   showPersons : false
+  // }
 
   // switchNameHandler = (newName) => {
   //   this.setState({
@@ -54,21 +74,27 @@ class App extends Component {
   }
   
   render() {
-    const style = {
-      backgroundColor : "green",
-      color : "white",
-      font : "inherit",
-      padding : "8px",
-      border : "2px solid blue",
-      pointer : "cursor",
-    };
+    // const style = {
+    //   backgroundColor : "green",
+    //   color : "white",
+    //   font : "inherit",
+    //   padding : "8px",
+    //   border : "2px solid blue",
+    //   pointer : "cursor",
+    // };
    
-
+    console.log("[App.js] inside render()");
     let persons = null;
+    // let btnClass = ' ';
     if(this.state.showPersons) {
       persons = (
         <div>
-          { this.state.persons.map ( (person, index) => {
+          <Persons 
+            persons = {this.state.persons}
+            clicked = {this.deletePersonHandler}
+            changed = {this.nameChangedHandler}
+          />
+          {/* { this.state.persons.map ( (person, index) => {
             return <Person 
                     click={ () => this.deletePersonHandler( index )} 
                     name={person.name}
@@ -76,7 +102,7 @@ class App extends Component {
                     key={person.id}
                     changed={ (event)=> this.nameChangedHandler(event, person.id)}/>
 
-          })}
+          })} */}
           {/* <Person 
             name={this.state.persons[0].name}
             age={this.state.persons[0].age} 
@@ -96,22 +122,22 @@ class App extends Component {
           </Person> */}
         </div> 
       );
-      style.backgroundColor = "red"; 
+      // style.backgroundColor = "red"; 
+      // btnClass = classes.Red;
     }
-    const classes = [];
-    if(this.state.persons.length <= 2)
-    {
-      classes.push('red');
-    }
-    if(this.state.persons.length <= 1)
-    {
-      classes.push("bold");
-    }
+    
     return (
-          <div className="App">
-            <h1>Hi, I am React developer.</h1>
-            <p className={classes.join(' ')}>This is really working</p>
-            <button style={style} onClick={this.togglePersonsHandler}>Toggle Person</button>
+          <div className={classes.App}>
+            <Cockpit
+              title = {this.props.appTitle}
+              showPersons = {this.state.showPersons}
+              persons = {this.state.persons}
+              clicked = {this.togglePersonsHandler}
+            />
+            {/* <h1>Hi, I am React developer.</h1>
+            <p className={assignedClasses .join(' ')}>This is really working</p>
+            <button className = {btnClass}// style={style} 
+            onClick={this.togglePersonsHandler}>Toggle Person</button> */}
             {persons}
           </div>
     );
@@ -119,3 +145,4 @@ class App extends Component {
 }
 
 export default App;
+
